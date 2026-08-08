@@ -23,10 +23,12 @@ jobs:
     name: DiffSeal
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: DiffSeal review readiness
         id: diffseal
+        # Replace <owner> with the public repository owner and <ref> with the
+        # immutable release tag (e.g. v0.1.0) at the governed public release.
         uses: <owner>/diffseal@<ref>
         with:
           config: .diffseal.toml
@@ -34,7 +36,7 @@ jobs:
           timeout: 180
 
       - name: Upload DiffSeal evidence
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: diffseal-evidence
           path: evidence/

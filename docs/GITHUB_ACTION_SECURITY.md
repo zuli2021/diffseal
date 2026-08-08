@@ -39,9 +39,27 @@ The Action never executes user-controlled command strings. Action inputs are pas
 
 Evidence artifacts may contain tool findings, filenames, and normalized check results. They must not contain environment-secret dumps. DiffSeal's process boundary runs tools with a sanitized allow-listed environment and never writes the full environment into evidence.
 
-## First-party action pinning
+## Third-party action pinning
 
-Example workflows reference first-party actions by major-version release tag (for example `actions/setup-python@v5`, `actions/upload-artifact@v4`). At the governed Community release, these references are replaced with immutable commit SHAs. DiffSeal is always referenced as `owner/diffseal@<ref>` where `<ref>` is the pinned release.
+All external GitHub Actions referenced by DiffSeal workflows and the Action itself are pinned to full immutable commit SHAs, verified as originating from the official upstream repository. Every reference keeps a short version comment for maintainability, for example:
+
+```yaml
+uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+```
+
+Current pinned set (verified against each official repository and current stable release):
+
+| Action | Pinned version | Commit SHA |
+|---|---|---|
+| actions/checkout | v7.0.1 | `3d3c42e5aac5ba805825da76410c181273ba90b1` |
+| actions/setup-python | v7.0.0 | `5fda3b95a4ea91299a34e894583c3862153e4b97` |
+| actions/upload-artifact | v7.0.1 | `043fb46d1a93c77aae656e7c1c64a875d1fc6a0a` |
+| actions/download-artifact | v8.0.1 | `3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c` |
+| pypa/gh-action-pypi-publish | v1.14.2 | `dc37677b2e1c63e2034f94d8a5b11f265b73ba33` |
+
+Automated tests scan every committed workflow/example YAML and fail if an external Action reference is not a full 40-character SHA. Local `uses: ./...` references are exempt.
+
+DiffSeal itself is referenced by consumers as `owner/diffseal@<ref>`; the `<owner>` and `<ref>` placeholders are resolved to the public owner and immutable release tag at the governed public release.
 
 ## Verification
 

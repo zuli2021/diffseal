@@ -67,20 +67,46 @@ def test_ci_matrix_covers_310_and_312():
 def test_pypi_workflow_uses_release_only_trigger():
     data = _load(WORKFLOW_DIR / "publish-pypi.yml")
     triggers = data["on"]
-    assert "push" not in triggers, "must not publish on ordinary pushes"
-    assert "release" in triggers
-    assert triggers["release"]["types"] == ["published"]
+    assert triggers == {"release": {"types": ["published"]}}, (
+        "publish must trigger only on GitHub Release publication"
+    )
+    assert "push" not in triggers
+    assert "workflow_dispatch" not in triggers, "no manual dispatch for v0.1"
 
 
 def test_pypi_workflow_uses_oidc_not_api_token():
     data = _load(WORKFLOW_DIR / "publish-pypi.yml")
-    assert data["permissions"]["id-token"] == "write"
-    assert data["permissions"]["contents"] == "read"
+    # OIDC id-token is granted only to the publishing job, not globally.
+    assert data["permissions"] == {"contents": "read"}
+    assert "permissions" not in data["jobs"]["build"], "build job inherits contents: read only"
+    assert data["jobs"]["publish"]["permissions"] == {"id-token": "write"}
+    assert data["jobs"]["publish"]["environment"] == "pypi"
     text = (WORKFLOW_DIR / "publish-pypi.yml").read_text(encoding="utf-8")
     assert "PYPI_API_TOKEN" not in text
     assert "secrets." not in text
     assert "pypa/gh-action-pypi-publish" in text
-    assert "environment: pypi" in text
+
+
+def test_pypi_workflow_build_and_publish_are_separated():
+    data = _load(WORKFLOW_DIR / "publish-pypi.yml")
+    publish_job = data["jobs"]["publish"]
+    assert publish_job["needs"] == "build"
+    # The publishing job must not build the package after OIDC authority is granted.
+    publish_uses = " ".join(str(step.get("uses", "")) for step in publish_job["steps"])
+    assert "actions/checkout" not in publish_uses
+    assert "python -m build" not in yaml.dump(publish_job["steps"]).lower()
+
+
+def test_pypi_workflow_attestations_explicitly_disabled():
+    text = (WORKFLOW_DIR / "publish-pypi.yml").read_text(encoding="utf-8")
+    assert "attestations: false" in text
+
+
+def test_pypi_workflow_uses_download_artifact_for_dist():
+    data = _load(WORKFLOW_DIR / "publish-pypi.yml")
+    uses = [step.get("uses", "") for step in data["jobs"]["publish"]["steps"]]
+    assert any("download-artifact" in u for u in uses)
+    assert any("gh-action-pypi-publish" in u for u in uses)
 
 
 def test_release_workflow_is_validation_only():
