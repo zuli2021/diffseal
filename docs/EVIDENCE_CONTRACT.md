@@ -47,6 +47,26 @@ A required check that cannot execute successfully MUST produce `ERROR` at the ch
 
 A later policy MAY explicitly map `ERROR` differently, but the default semantics are closed by this document.
 
+### Required SKIPPED Clarification
+
+A required check producing `ERROR` means required evidence could not be established and results in `INSUFFICIENT_EVIDENCE`.
+
+A required check producing `SKIPPED` likewise means required evidence was not produced and results in `INSUFFICIENT_EVIDENCE`.
+
+`SKIPPED` remains distinct from `ERROR`:
+
+- `ERROR` = execution/evidence acquisition failed unexpectedly.
+- `SKIPPED` = check did not run by design, policy, or applicable collector condition.
+
+Neither required `ERROR` nor required `SKIPPED` may be silently treated as `PASS`.
+
+Canonical default gate precedence:
+
+1. any required `ERROR` or required `SKIPPED` -> `INSUFFICIENT_EVIDENCE`
+2. otherwise any required `FAIL` -> `FAIL`
+3. otherwise configured optional review condition -> `REVIEW_REQUIRED`
+4. otherwise -> `PASS`
+
 ## Conceptual EvidenceBundle
 
 ```text

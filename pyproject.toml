@@ -1,0 +1,72 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "diffseal"
+version = "0.1.0"
+description = "Local-first Python PR evidence gate: one exact change to one normalized evidence bundle and one explicit review-readiness decision."
+readme = { text = "DiffSeal Community Core. See docs/PRODUCT_CHARTER.md and docs/EVIDENCE_CONTRACT.md.", content-type = "text/plain" }
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [{ name = "DiffSeal" }]
+keywords = ["verification", "evidence", "gate", "pytest", "ruff", "coverage"]
+dependencies = [
+    "packaging>=21",
+    "tomli>=2; python_version < '3.11'",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Quality Assurance",
+]
+
+[project.scripts]
+diffseal = "diffseal.cli:main"
+
+[project.optional-dependencies]
+# Tooling for local development. These are NOT runtime dependencies.
+dev = [
+    "pytest>=7",
+    "ruff>=0.6",
+    "coverage[toml]>=7",
+    "build>=1",
+    "mypy>=1",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+diffseal = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM"]
+ignore = ["B008", "SIM108"]
+
+[tool.coverage.run]
+source = ["diffseal"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+
+[tool.mypy]
+python_version = "3.10"
+ignore_missing_imports = true
+files = ["src/diffseal"]
