@@ -1,0 +1,73 @@
+{
+  "schema_version": "0.1",
+  "evidence_id": "sample-evidence-id",
+  "product_version": "0.1.0",
+  "run_id": "sample-run-id",
+  "started_at": "2026-01-01T00:00:00+00:00",
+  "finished_at": "2026-01-01T00:00:01+00:00",
+  "repository": "examples/python-basic",
+  "base_revision": "",
+  "head_revision": "6b6421544080b7914cc559b84db873c527cbf0f2",
+  "invocation_mode": "local-cli",
+  "configuration_hash": "d32f1027156ac1c16d921e4d137aa5d41884773d76f218c67997d85691849560",
+  "policy_hash": "11cf74be6c323c7a16668652f49e69456bd4359af4991d99a897b0ce800abc00",
+  "tool_versions": {
+    "pytest": "9.1.1",
+    "ruff": "0.16.2",
+    "coverage": "7.15.4"
+  },
+  "checks": [
+    {
+      "id": "pytest",
+      "collector_id": "pytest",
+      "required": true,
+      "outcome": "PASS",
+      "duration": 0.4378,
+      "summary": "1 passed",
+      "findings": []
+    },
+    {
+      "id": "ruff",
+      "collector_id": "ruff",
+      "required": true,
+      "outcome": "PASS",
+      "duration": 0.0704,
+      "summary": "no lint violations",
+      "findings": []
+    },
+    {
+      "id": "coverage",
+      "collector_id": "coverage",
+      "required": false,
+      "outcome": "PASS",
+      "duration": 1.1601,
+      "summary": "coverage 100.0% meets threshold 80%",
+      "findings": []
+    },
+    {
+      "id": "dependency",
+      "collector_id": "dependency",
+      "required": false,
+      "outcome": "SKIPPED",
+      "duration": 0.0,
+      "summary": "no declared dependencies found; check skipped",
+      "findings": []
+    }
+  ],
+  "change_summary": {
+    "is_git": true,
+    "branch": "main",
+    "files_changed": 0,
+    "staged_files": 0
+  },
+  "warnings": [],
+  "environment_metadata": {
+    "python_version": "3.12.3",
+    "platform": "linux",
+    "cwd": "examples/python-basic"
+  },
+  "decision": "PASS",
+  "decision_reasons": [
+    "all required evidence satisfactory"
+  ]
+}

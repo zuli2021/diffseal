@@ -1,0 +1,46 @@
+name: DiffSeal review readiness
+
+# Example usage of the DiffSeal composite Action.
+#
+# This file lives under examples/ so it is NOT executed by GitHub.
+# Copy it to .github/workflows/ in a repository that wants DiffSeal to run on
+# pull requests.
+#
+# Security model (see docs/GITHUB_ACTION_SECURITY.md):
+# - triggered on pull_request (fork code never sees repository secrets)
+# - contents: read only
+# - no repository secrets required
+# - no PR comment posting
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  diffseal:
+    name: DiffSeal
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: DiffSeal review readiness
+        id: diffseal
+        uses: <owner>/diffseal@<ref>
+        with:
+          config: .diffseal.toml
+          output-dir: evidence
+          timeout: 180
+
+      - name: Upload DiffSeal evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: diffseal-evidence
+          path: evidence/
+
+      - name: Show decision
+        shell: bash
+        env:
+          DECISION: ${{ steps.diffseal.outputs.decision }}
+        run: 'echo "Gate decision: ${DECISION}"'

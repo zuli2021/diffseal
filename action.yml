@@ -1,0 +1,79 @@
+name: DiffSeal
+description: >-
+  DiffSeal review-readiness gate: run Python verification signals against the
+  exact repository state, normalize them into evidence.json + evidence.md, and
+  produce one explicit PASS / FAIL / REVIEW_REQUIRED / INSUFFICIENT_EVIDENCE
+  decision.
+author: Zuli2021
+
+branding:
+  icon: shield
+  color: blue
+
+inputs:
+  config:
+    description: Path to a .diffseal.toml configuration file, relative to the workspace root.
+    required: false
+    default: ""
+  output-dir:
+    description: Directory (relative to the workspace root) where evidence.json and evidence.md are written.
+    required: false
+    default: "evidence"
+  timeout:
+    description: Per-check tool timeout in seconds.
+    required: false
+    default: "180"
+
+outputs:
+  decision:
+    description: The gate decision (PASS, FAIL, REVIEW_REQUIRED, or INSUFFICIENT_EVIDENCE).
+  evidence-json:
+    description: Path to the generated canonical evidence.json, relative to the workspace root.
+  evidence-markdown:
+    description: Path to the generated evidence.md, relative to the workspace root.
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+
+    - name: Install DiffSeal
+      shell: bash
+      run: pip install "${{ github.action_path }}"
+
+    - name: Run DiffSeal
+      id: diffseal
+      shell: bash
+      env:
+        DIFFSEAL_CONFIG: ${{ inputs.config }}
+        DIFFSEAL_OUTPUT_DIR: ${{ inputs.output-dir }}
+        DIFFSEAL_TIMEOUT: ${{ inputs.timeout }}
+      run: |
+        set -u
+        args=()
+        if [[ -n "${DIFFSEAL_CONFIG:-}" ]]; then
+          args+=(--config "${DIFFSEAL_CONFIG}")
+        fi
+        if diffseal run "${args[@]}" --output-dir "${DIFFSEAL_OUTPUT_DIR:-evidence}" --timeout "${DIFFSEAL_TIMEOUT:-180}"; then
+          exit_code=0
+        else
+          exit_code=$?
+        fi
+        python - <<'PY'
+        import json
+        import os
+        import pathlib
+
+        out_dir = pathlib.Path(os.environ.get("DIFFSEAL_OUTPUT_DIR", "evidence"))
+        evidence_json = out_dir / "evidence.json"
+        if evidence_json.is_file():
+            data = json.loads(evidence_json.read_text(encoding="utf-8"))
+            with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as handle:
+                handle.write(f"decision={data['decision']}\n")
+                handle.write(f"evidence-json={evidence_json}\n")
+                handle.write(f"evidence-markdown={out_dir / 'evidence.md'}\n")
+        PY
+        exit "$exit_code"

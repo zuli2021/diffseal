@@ -1,0 +1,22 @@
+[checks.pytest]
+enabled = true
+required = true
+args = ["-q"]
+
+[checks.ruff]
+enabled = true
+required = true
+args = ["check", "."]
+
+[checks.coverage]
+enabled = true
+required = false
+threshold = 80.0
+args = ["-q"]
+
+[checks.dependency]
+enabled = true
+required = false
+
+[evaluation]
+review_on = []

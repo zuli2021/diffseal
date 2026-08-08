@@ -1,15 +1,16 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "diffseal"
 version = "0.1.0"
 description = "Local-first Python PR evidence gate: one exact change to one normalized evidence bundle and one explicit review-readiness decision."
-readme = { text = "DiffSeal Community Core. See docs/PRODUCT_CHARTER.md and docs/EVIDENCE_CONTRACT.md.", content-type = "text/plain" }
+readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "Apache-2.0" }
-authors = [{ name = "DiffSeal" }]
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [{ name = "Zuli2021", email = "zulisaberi@gmail.com" }]
 keywords = ["verification", "evidence", "gate", "pytest", "ruff", "coverage"]
 dependencies = [
     "packaging>=21",
@@ -18,13 +19,14 @@ dependencies = [
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Topic :: Software Development :: Quality Assurance",
+    "Typing :: Typed",
 ]
 
 [project.scripts]
@@ -38,6 +40,7 @@ dev = [
     "coverage[toml]>=7",
     "build>=1",
     "mypy>=1",
+    "PyYAML>=6",
 ]
 
 [tool.setuptools.packages.find]
