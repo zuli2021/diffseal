@@ -16,9 +16,10 @@ YAML_PATHS = [
     *sorted((REPO_ROOT / "examples").glob("**/*.yml")),
 ]
 
-# The DiffSeal self-reference placeholder in the example workflow is resolved
-# to the public owner + immutable tag at the governed release, so it is exempt.
-SELF_REFERENCE_PLACEHOLDER = "<owner>/diffseal@<ref>"
+# DiffSeal's own governed self-reference is the exact release-specific tag
+# v0.1.0. It is validated separately from the THIRD-PARTY full-SHA pin rule,
+# because its release identity is governed as a release-specific tag.
+SELF_REFERENCE = "zuli2021/diffseal@v0.1.0"
 
 USES_RE = re.compile(r"\buses:\s*([^\s#]+)")
 
@@ -28,7 +29,7 @@ def _uses_refs(path: Path) -> list[str]:
     refs = []
     for match in USES_RE.finditer(text):
         ref = match.group(1)
-        if ref == SELF_REFERENCE_PLACEHOLDER or ref.startswith("./"):
+        if ref == SELF_REFERENCE or ref.startswith("./"):
             continue
         refs.append(ref)
     return refs
@@ -87,3 +88,13 @@ def test_release_identity_is_consistent():
     preflight = (REPO_ROOT / "docs" / "COMMUNITY_RELEASE_PREFLIGHT.md").read_text(encoding="utf-8")
     assert "v0.1.0" in preflight
     assert "v0" in preflight
+
+
+def test_finalized_public_action_identity():
+    readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+    example = (REPO_ROOT / "examples" / "workflow" / "diffseal.yml").read_text(encoding="utf-8")
+    for text in (readme, example):
+        assert "zuli2021/diffseal@v0.1.0" in text
+        assert "<owner>" not in text
+        assert "<ref>" not in text
+    assert SELF_REFERENCE == "zuli2021/diffseal@v0.1.0"

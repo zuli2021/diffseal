@@ -103,13 +103,15 @@ review_on = []
 
 ## GitHub Actions
 
-Add the DiffSeal Action to a workflow (see `examples/workflow/diffseal.yml` for a complete example):
+After the `v0.1.0` release is published, add the DiffSeal Action to a workflow (see `examples/workflow/diffseal.yml` for a complete example):
 
 ```yaml
-- uses: <owner>/diffseal@<ref>
+- uses: zuli2021/diffseal@v0.1.0
   with:
     output-dir: evidence
 ```
+
+The `v0.1.0` tag does not exist yet; the reference above is the intended governed first-release tag.
 
 The Action runs the same DiffSeal CLI against the checked-out repository. Upload the evidence artifacts in a later step:
 

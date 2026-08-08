@@ -57,9 +57,9 @@ Current pinned set (verified against each official repository and current stable
 | actions/download-artifact | v8.0.1 | `3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c` |
 | pypa/gh-action-pypi-publish | v1.14.2 | `dc37677b2e1c63e2034f94d8a5b11f265b73ba33` |
 
-Automated tests scan every committed workflow/example YAML and fail if an external Action reference is not a full 40-character SHA. Local `uses: ./...` references are exempt.
+Automated tests scan every committed workflow/example YAML and require every third-party GitHub Action reference to use a full 40-character commit SHA. Local `uses: ./...` references are exempt.
 
-DiffSeal itself is referenced by consumers as `owner/diffseal@<ref>`; the `<owner>` and `<ref>` placeholders are resolved to the public owner and immutable release tag at the governed public release.
+DiffSeal's own governed self-reference is `zuli2021/diffseal@v0.1.0`. It is the exact release-specific self-reference and is validated separately from third-party Action SHA pins; its release identity is governed as the `v0.1.0` release-specific tag. No other version-tag or moving-branch Action reference is accepted by the pinning tests.
 
 ## Verification
 

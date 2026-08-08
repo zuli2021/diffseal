@@ -13,10 +13,10 @@ steps that require owner authorization. It is not new architecture.
 ## Version / release identity
 
 - Package version: `0.1.0`
-- Immutable Git tag: `v0.1.0`
+- Release-specific Git tag: `v0.1.0`
 - GitHub Release: `v0.1.0`
 - Optional moving Action compatibility tag: `v0` -> `v0.1.0`
-  - `v0.1.0` is the immutable release identity.
+  - `v0.1.0` is the governed release-specific tag identity.
   - `v0` is a movable compatibility alias for consumers; moving it later is an
     intentional, governed release operation.
   - `v0` does not imply `v1` semantics for a 0.x package.
