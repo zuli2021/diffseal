@@ -4,6 +4,50 @@ Turn Python verification signals into one reproducible review-readiness evidence
 
 DiffSeal is a local-first, Python-first review-readiness gate. It runs the verification tools you already use against one exact repository state, normalizes their output into a single evidence bundle, and produces one explicit decision: is this change ready for review?
 
+## Quick flow
+
+Intended post-release installation — DiffSeal is not yet published to PyPI:
+
+```bash
+pip install diffseal
+```
+
+Then, inside a Python repository:
+
+```bash
+diffseal init
+diffseal plan
+diffseal run
+```
+
+A run produces one explicit decision and two evidence files:
+
+```
+decision: PASS
+evidence.json: ...
+evidence.md: ...
+```
+
+DiffSeal orchestrates and normalizes the verification signals you already use — pytest, Ruff, coverage, and dependency checks — into one review-readiness decision. It does not replace those tools:
+
+```text
+Python repository
+    |
+    +-- pytest
+    +-- Ruff
+    +-- coverage
+    +-- dependency check
+            |
+            v
+    normalized evidence
+            |
+            v
+    PASS / FAIL / REVIEW_REQUIRED / INSUFFICIENT_EVIDENCE
+            |
+            +-- evidence.json
+            +-- evidence.md
+```
+
 ## Why DiffSeal
 
 Verification output is scattered. A change produces pytest output, Ruff output, coverage output, and dependency availability signals across different logs and exit codes. A reviewer has to gather and interpret all of it manually before deciding whether a pull request is ready.
@@ -193,10 +237,12 @@ The same normalized evidence plus the same policy always produces the same decis
 
 Community v0.1 collectors:
 
-- **pytest** — Python test suite
-- **Ruff** — Python linting
-- **coverage** — basic whole-repository coverage threshold
-- **dependency** — local declared requirement satisfaction
+| Collector | Role |
+|-----------|------|
+| pytest | Python test execution |
+| Ruff | Python lint verification |
+| coverage | basic whole-repository coverage threshold |
+| dependency | local declared-requirement satisfaction |
 
 The dependency check verifies only that dependencies declared in `pyproject.toml` and/or `requirements.txt` are installed in the local environment and satisfy their declared version constraints. It is **not**:
 
@@ -229,4 +275,4 @@ Community is licensed under the Apache License 2.0. See `LICENSE`.
 
 ## Status
 
-This repository is pre-public and release-ready in progress. DiffSeal has not been published to PyPI, the GitHub Marketplace, or a public GitHub repository. All commands, packaging, and workflows here are prepared for a separately governed Community release.
+The DiffSeal repository is public. Community v0.1.0 is being prepared for its first governed release. DiffSeal has not yet been published to PyPI or the GitHub Marketplace, and the `v0.1.0` release has not yet been created.

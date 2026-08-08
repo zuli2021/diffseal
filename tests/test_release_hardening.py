@@ -98,3 +98,23 @@ def test_finalized_public_action_identity():
         assert "<owner>" not in text
         assert "<ref>" not in text
     assert SELF_REFERENCE == "zuli2021/diffseal@v0.1.0"
+
+
+def test_public_presentation_metadata():
+    pyproject = (REPO_ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    assert 'Repository = "https://github.com/zuli2021/diffseal"' in pyproject
+    assert 'Issues = "https://github.com/zuli2021/diffseal/issues"' in pyproject
+
+    readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+    assert "pre-public" not in readme
+    assert "has not yet been published to PyPI" in readme
+    assert "GitHub Marketplace" in readme
+    for marker in (
+        "evidence.json",
+        "evidence.md",
+        "PASS",
+        "FAIL",
+        "REVIEW_REQUIRED",
+        "INSUFFICIENT_EVIDENCE",
+    ):
+        assert marker in readme

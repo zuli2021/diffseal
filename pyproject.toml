@@ -32,6 +32,10 @@ classifiers = [
 [project.scripts]
 diffseal = "diffseal.cli:main"
 
+[project.urls]
+Repository = "https://github.com/zuli2021/diffseal"
+Issues = "https://github.com/zuli2021/diffseal/issues"
+
 [project.optional-dependencies]
 # Tooling for local development. These are NOT runtime dependencies.
 dev = [
