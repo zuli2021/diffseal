@@ -6,7 +6,7 @@ DiffSeal is a local-first, Python-first review-readiness gate. It runs the verif
 
 ## Quick flow
 
-Intended post-release installation — DiffSeal is not yet published to PyPI:
+For a published release, install DiffSeal with:
 
 ```bash
 pip install diffseal
@@ -74,13 +74,11 @@ The bundle ends with one decision:
 
 ### Release installation
 
-After DiffSeal is published to PyPI, install it with:
+Install a published release from PyPI with:
 
 ```bash
 pip install diffseal
 ```
-
-> **Note:** DiffSeal has not been published to PyPI yet. The command above is the intended post-release installation and does not currently resolve from PyPI.
 
 ### Local development installation
 
@@ -147,15 +145,13 @@ review_on = []
 
 ## GitHub Actions
 
-After the `v0.1.0` release is published, add the DiffSeal Action to a workflow (see `examples/workflow/diffseal.yml` for a complete example):
+Use the release-specific Action tag in a workflow (see `examples/workflow/diffseal.yml` for a complete example):
 
 ```yaml
 - uses: zuli2021/diffseal@v0.1.0
   with:
     output-dir: evidence
 ```
-
-The `v0.1.0` tag does not exist yet; the reference above is the intended governed first-release tag.
 
 The Action runs the same DiffSeal CLI against the checked-out repository. Upload the evidence artifacts in a later step:
 
@@ -275,4 +271,4 @@ Community is licensed under the Apache License 2.0. See `LICENSE`.
 
 ## Status
 
-The DiffSeal repository is public. Community v0.1.0 is being prepared for its first governed release. DiffSeal has not yet been published to PyPI or the GitHub Marketplace, and the `v0.1.0` release has not yet been created.
+DiffSeal Community is an early/Alpha release line focused on local-first Python review-readiness evidence. The repository is public. Current release availability is represented by the repository's GitHub Releases and PyPI project page.

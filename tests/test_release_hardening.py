@@ -106,9 +106,19 @@ def test_public_presentation_metadata():
     assert 'Issues = "https://github.com/zuli2021/diffseal/issues"' in pyproject
 
     readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+    # No stale pre-public / pre-release temporal assertions may remain.
     assert "pre-public" not in readme
-    assert "has not yet been published to PyPI" in readme
-    assert "GitHub Marketplace" in readme
+    for obsolete in (
+        "DiffSeal has not been published to PyPI yet",
+        "DiffSeal is not yet published to PyPI",
+        "The `v0.1.0` tag does not exist yet",
+        "the `v0.1.0` release has not yet been created",
+        "This repository is pre-public",
+    ):
+        assert obsolete not in readme
+    # Durable release-readiness essentials must be present.
+    assert "pip install diffseal" in readme
+    assert "zuli2021/diffseal@v0.1.0" in readme
     for marker in (
         "evidence.json",
         "evidence.md",
