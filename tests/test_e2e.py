@@ -87,36 +87,49 @@ def test_end_to_end_failing_lint(monkeypatch, make_fixture_repo, fail_lint_files
 
 
 def test_end_to_end_missing_required_tool(monkeypatch, make_fixture_repo, healthy_files, tmp_path):
-    """A required tool genuinely unavailable in the environment -> INSUFFICIENT_EVIDENCE.
+    """A required tool unavailable in the environment -> INSUFFICIENT_EVIDENCE.
 
-    Uses the system Python interpreter (which has no pytest/coverage/ruff
-    installed) so tool resolution genuinely fails, with a slim PATH that only
-    provides git for repository context.
+    Hermetic: the missing-tool state is established by the test itself and is
+    independent of which tools happen to be installed on the host or in the
+    current interpreter. The same interpreter as the test process is used (it
+    may well have Ruff installed); a temporary child-process startup hook makes
+    the ``ruff`` module unresolvable, and a restricted PATH provides no ``ruff``
+    executable, so real DiffSeal tool resolution (module first, then PATH)
+    concludes that Ruff is unavailable.
     """
-    system_python = shutil.which("python3")
-    assert system_python, "system python3 required for this test"
-    # Verify the system python really lacks the tools so the scenario is authentic.
-    probe = subprocess.run(
-        [system_python, "-c", "import importlib.util; print(importlib.util.find_spec('ruff'))"],
-        capture_output=True,
-        text=True,
-        check=False,
+    # 1. Temporary startup hook (sitecustomize.py, test-only) that blocks the
+    #    `ruff` module for the child process.
+    hook_dir = tmp_path / "hook"
+    hook_dir.mkdir()
+    (hook_dir / "sitecustomize.py").write_text(
+        "import importlib.util\n"
+        "import sys\n"
+        "\n"
+        "_original_find_spec = importlib.util.find_spec\n"
+        "\n"
+        "def _blocked_find_spec(name, *args, **kwargs):\n"
+        "    if name == 'ruff' or name.startswith('ruff.'):\n"
+        "        return None\n"
+        "    return _original_find_spec(name, *args, **kwargs)\n"
+        "\n"
+        "importlib.util.find_spec = _blocked_find_spec\n",
+        encoding="utf-8",
     )
-    assert "None" in probe.stdout, "expected system python to lack ruff for this test"
 
-    repo = make_fixture_repo(healthy_files, git=True)
+    # 2. Restricted PATH with git only (repository context), no ruff executable.
     bin_dir = tmp_path / "slimbin"
     bin_dir.mkdir()
     real_git = shutil.which("git")
     assert real_git
     (bin_dir / "git").symlink_to(real_git)
 
+    repo = make_fixture_repo(healthy_files, git=True)
     src_dir = str(Path(__file__).resolve().parent.parent / "src")
     env = {
         "PATH": str(bin_dir),
-        "PYTHONPATH": src_dir,
+        "PYTHONPATH": os.pathsep.join([str(hook_dir), src_dir]),
     }
-    result = _cli(repo, "run", env=env, python=system_python)
+    result = _cli(repo, "run", env=env)
     assert result.returncode == EXIT_INSUFFICIENT, result.stdout + result.stderr
     data = _read_evidence(repo)
     assert data["decision"] == "INSUFFICIENT_EVIDENCE"
