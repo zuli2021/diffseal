@@ -1,25 +1,20 @@
-# Community Release Preflight
+# Community v0.1.0 Release Protocol
 
-Operational release gates for the first governed public DiffSeal Community
-release. This document records local preflight results and the exact external
-steps that require owner authorization. It is not new architecture.
+This document defines the governed release gates and execution sequence for
+the first DiffSeal Community release. Live external state must be re-verified
+immediately before each irreversible release operation. This document is a
+protocol, not a live snapshot of current external configuration.
 
-## Status
+## Fixed release identities
 
-- Local preflight: COMPLETE (see PKG-004).
-- External public release: NOT AUTHORIZED. `EXTERNAL_PUBLIC_RELEASE_AUTHORIZED`
-  remains FALSE until owner authorization is granted.
-
-## Version / release identity
-
-- Package version: `0.1.0`
-- Release-specific Git tag: `v0.1.0`
+- Product: `DiffSeal`
+- Repository: `zuli2021/diffseal`
+- Package: `diffseal`
+- Version: `0.1.0`
+- Release-specific tag: `v0.1.0`
 - GitHub Release: `v0.1.0`
-- Optional moving Action compatibility tag: `v0` -> `v0.1.0`
-  - `v0.1.0` is the governed release-specific tag identity.
-  - `v0` is a movable compatibility alias for consumers; moving it later is an
-    intentional, governed release operation.
-  - `v0` does not imply `v1` semantics for a 0.x package.
+- PyPI workflow: `publish-pypi.yml`
+- GitHub environment: `pypi`
 
 ## Release artifacts
 
@@ -36,65 +31,95 @@ Intended first-release artifacts:
 Not in scope for v0.1: Docker, GHCR, SBOM, provenance bundle, custom binaries,
 installers, Homebrew, Scoop, Winget, crates.io.
 
-## Namespace preflight (read-only, at PKG-004 time)
+## Release boundaries
 
-- PyPI project `diffseal`: AVAILABLE (registry lookup 404).
-- GitHub user/org `diffseal`: not found (no exact collision observed).
-- Exact `owner/diffseal` repository: not queryable until the owner is resolved.
-- GitHub Marketplace `DiffSeal`: no collision observed in read-only search;
-  reconfirm after the public repository exists.
+- The first canonical release authorizes only the release-specific tag
+  `v0.1.0`.
+- A moving compatibility alias `v0` is NOT part of the v0.1.0 execution
+  sequence. Any moving major alias remains a separately governed future
+  decision and operation.
+- PyPI publication is not a manually started step. The GitHub Release
+  `published` event triggers `publish-pypi.yml` automatically.
+- Marketplace Action publication is associated with publishing a tagged GitHub
+  Release through the Release Action UI. It is not a guaranteed, fully
+  independent post-release API step, and it requires eligibility verification
+  before release publication.
 
-Important: a PyPI pending Trusted Publisher does NOT reserve the project name
-until first successful publication. Namespace availability must be rechecked
-immediately before the actual release operation.
+## GitHub `pypi` environment invariant
 
-## Future PyPI pending Trusted Publisher fields (do not submit)
+Immediately before release, verify the protected publishing environment:
 
-- PyPI project: `diffseal`
-- GitHub owner: `<UNRESOLVED UNTIL OWNER/REMOTE AUTHORIZATION>`
-- Repository: `diffseal`
-- Workflow filename: `publish-pypi.yml`
-- Environment: `pypi`
+- environment name = `pypi`
+- required reviewer = owner
+- `prevent_self_review` = false for sole-owner operation
+- `can_admins_bypass` = false
+- deployment policy allows the intended governed release/tag context
+- unnecessary environment secrets = none
+- long-lived PyPI API token = none
 
-## GitHub `pypi` environment requirements (future configuration)
+Do not mutate the environment during release execution.
 
-Required for the protected publishing environment:
+## PyPI namespace / pending publisher rule
 
-- required reviewer/owner approval;
-- prevent self-review where practical;
-- restrict deployment to the intended release/tag context where available;
-- no unnecessary environment secrets;
-- no long-lived PyPI token.
+A Pending Trusted Publisher does NOT reserve the project name until first
+successful publication. A fresh PyPI namespace check is required immediately
+before the irreversible tag/release sequence.
 
-This environment is NOT configured in PKG-004 and MUST NOT be claimed as
-configured. It is an external gate.
+Immediately before release, verify the Pending Trusted Publisher matches:
 
-## External configuration still required
+- project: `diffseal`
+- owner: `zuli2021`
+- repository: `diffseal`
+- workflow: `publish-pypi.yml`
+- environment: `pypi`
 
-1. GitHub repository creation and visibility (owner-gated).
-2. GitHub `pypi` protected environment configuration.
-3. PyPI pending Trusted Publisher creation (after repository exists).
-4. GitHub Marketplace agreement and publication (separately governed).
-5. Immutable-SHA pinning of any newly added third-party Actions.
+If the `diffseal` PyPI namespace becomes occupied unexpectedly:
 
-## Proposed first-release sequence
+- STOP
+- do not create the tag
+- do not create the GitHub Release
+- do not upload manually
+- report the naming/distribution collision for governed recovery
 
-1. Final clean local baseline.
-2. External namespace recheck (PyPI, GitHub, Marketplace).
-3. Create the owner-approved GitHub repository.
-4. Configure the protected `pypi` environment.
-5. Configure the PyPI pending Trusted Publisher.
-6. Push `main`.
-7. Verify GitHub CI on `main`.
-8. Create and push tag `v0.1.0`.
-9. Verify the tag-triggered release validation workflow.
-10. Create/publish the GitHub Release `v0.1.0`.
-11. Publish the Action to the GitHub Marketplace via the governed release UI.
-12. The protected OIDC workflow publishes to PyPI.
-13. Verify the PyPI package.
-14. Verify the Marketplace listing.
-15. Verify installation from PyPI (`pip install diffseal`).
-16. Verify the Action from the public tag.
-17. Final canonical release verdict.
+No API-token fallback is permitted.
 
-None of these steps may be executed without separate owner authorization.
+## Owner authorization
+
+Every irreversible external mutation requires explicit owner authorization at
+execution time. This document does not store a permanent authorization state.
+
+## First-release sequence
+
+1. Verify final public `main` SHA and green CI.
+2. Verify clean local state.
+3. Verify GitHub presentation metadata.
+4. Verify tags = 0 and GitHub Releases = 0.
+5. Recheck PyPI `diffseal` namespace.
+6. Verify exact Pending Trusted Publisher configuration.
+7. Verify exact GitHub `pypi` environment/protection/policy.
+8. Verify release and publish workflow contents.
+9. Verify GitHub Marketplace eligibility immediately before release
+   publication (Action metadata valid; `DiffSeal` Marketplace name available;
+   Marketplace Developer Agreement accepted / publish checkbox usable), if
+   Marketplace publication is included in the release operation.
+10. Create the exact release-specific tag `v0.1.0` at the final governed
+    public-main SHA.
+11. Push only `v0.1.0`.
+12. Wait for the tag-triggered Release validation workflow to succeed.
+13. Prepare the GitHub Release using the EXISTING `v0.1.0` tag.
+14. Review release title/notes and Marketplace selection before publishing.
+15. Publish GitHub Release `v0.1.0`.
+16. Publishing the GitHub Release naturally triggers `publish-pypi.yml`.
+17. Approve the protected `pypi` environment when GitHub requests owner
+    approval.
+18. Let Trusted Publishing/OIDC publish to PyPI.
+19. Verify PyPI metadata and clean install.
+20. Verify GitHub Release/tag identity.
+21. Verify Action use from `zuli2021/diffseal@v0.1.0`.
+22. Verify Marketplace listing if it was included.
+23. Produce the final release closure report.
+
+## Verification
+
+See `tests/test_release_hardening.py` for automated validation of release
+hardening, including the durable release protocol assertions.

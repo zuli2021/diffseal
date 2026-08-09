@@ -1,15 +1,13 @@
 name: Publish to PyPI
 
-# PREPARATION ONLY. This workflow cannot run on ordinary pushes or manual
-# dispatch: it triggers only when an owner publishes a GitHub Release. DiffSeal
-# has not been published; this file prepares the Trusted Publishing (OIDC) flow
-# for a separately governed Community release.
+# Publishes DiffSeal distributions when an owner-governed GitHub Release is
+# published.
 #
-# The `pypi` environment is expected to be configured by the owner with strong
-# protection before first use. No API token or other long-lived secret is used.
+# The publish job uses the protected `pypi` GitHub environment and PyPI
+# Trusted Publishing (OIDC). No long-lived PyPI credential is used.
 #
-# v0.1 architecture explicitly defers Sigstore / provenance / attestations, so
-# the publishing Action is configured with `attestations: false`.
+# v0.1 intentionally defers attestations/provenance, so the publishing action
+# uses `attestations: false`.
 
 on:
   release:

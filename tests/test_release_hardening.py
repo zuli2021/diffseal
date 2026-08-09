@@ -128,3 +128,18 @@ def test_public_presentation_metadata():
         "INSUFFICIENT_EVIDENCE",
     ):
         assert marker in readme
+
+
+def test_release_protocol_is_durable():
+    protocol = (REPO_ROOT / "docs" / "COMMUNITY_RELEASE_PREFLIGHT.md").read_text(encoding="utf-8")
+    # No stale unresolved/live-snapshot state may remain.
+    assert "<UNRESOLVED UNTIL OWNER/REMOTE AUTHORIZATION>" not in protocol
+    assert "This environment is NOT configured" not in protocol
+    assert "repository creation" not in protocol
+    assert "EXTERNAL_PUBLIC_RELEASE_AUTHORIZED" not in protocol
+    # Durable governed identities must appear.
+    for marker in ("zuli2021/diffseal", "publish-pypi.yml", "pypi", "v0.1.0"):
+        assert marker in protocol
+    # The protocol must not authorize a moving `v0` alias in the first release.
+    assert "v0" in protocol
+    assert "`v0` is NOT part of the v0.1.0 execution" in protocol
