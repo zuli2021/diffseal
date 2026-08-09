@@ -148,7 +148,7 @@ review_on = []
 Use the release-specific Action tag in a workflow (see `examples/workflow/diffseal.yml` for a complete example):
 
 ```yaml
-- uses: zuli2021/diffseal@v0.1.0
+- uses: zuli2021/diffseal@v0.1.1
   with:
     output-dir: evidence
 ```

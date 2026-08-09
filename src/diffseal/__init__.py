@@ -6,7 +6,7 @@ normalized evidence bundle and one explicit review-readiness decision.
 
 from diffseal.models import CheckOutcome, CheckResult, EvidenceBundle, GateDecision
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 __all__ = [
     "__version__",

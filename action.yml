@@ -1,9 +1,5 @@
 name: DiffSeal
-description: >-
-  DiffSeal review-readiness gate: run Python verification signals against the
-  exact repository state, normalize them into evidence.json + evidence.md, and
-  produce one explicit PASS / FAIL / REVIEW_REQUIRED / INSUFFICIENT_EVIDENCE
-  decision.
+description: Local-first Python PR evidence gate that turns verification signals into one review-readiness decision.
 author: Zuli2021
 
 branding:

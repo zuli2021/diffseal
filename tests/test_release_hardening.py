@@ -16,10 +16,10 @@ YAML_PATHS = [
     *sorted((REPO_ROOT / "examples").glob("**/*.yml")),
 ]
 
-# DiffSeal's own governed self-reference is the exact release-specific tag
-# v0.1.0. It is validated separately from the THIRD-PARTY full-SHA pin rule,
+# DiffSeal's own governed self-reference is the current release-specific tag
+# v0.1.1. It is validated separately from the THIRD-PARTY full-SHA pin rule,
 # because its release identity is governed as a release-specific tag.
-SELF_REFERENCE = "zuli2021/diffseal@v0.1.0"
+SELF_REFERENCE = "zuli2021/diffseal@v0.1.1"
 
 USES_RE = re.compile(r"\buses:\s*([^\s#]+)")
 
@@ -76,7 +76,14 @@ def test_marketplace_root_action_metadata_is_unique():
     assert len(present) == 1, f"expected exactly one root action metadata file, got {present}"
     data = yaml.safe_load(present[0].read_text(encoding="utf-8"))
     assert data["name"] == "DiffSeal"
-    assert data["description"]
+    expected_description = (
+        "Local-first Python PR evidence gate that turns verification signals "
+        "into one review-readiness decision."
+    )
+    assert data["description"] == expected_description
+    assert len(data["description"]) < 125
+    assert data["branding"]["icon"] == "shield"
+    assert data["branding"]["color"] == "blue"
     assert data["runs"]["using"] == "composite"
     assert isinstance(data.get("inputs"), dict)
     assert isinstance(data.get("outputs"), dict)
@@ -84,7 +91,10 @@ def test_marketplace_root_action_metadata_is_unique():
 
 def test_release_identity_is_consistent():
     pyproject = (REPO_ROOT / "pyproject.toml").read_text(encoding="utf-8")
-    assert 'version = "0.1.0"' in pyproject
+    assert 'version = "0.1.1"' in pyproject
+    init_py = (REPO_ROOT / "src" / "diffseal" / "__init__.py").read_text(encoding="utf-8")
+    assert '__version__ = "0.1.1"' in init_py
+    # The historical first-release protocol remains governance for v0.1.0.
     preflight = (REPO_ROOT / "docs" / "COMMUNITY_RELEASE_PREFLIGHT.md").read_text(encoding="utf-8")
     assert "v0.1.0" in preflight
     assert "v0" in preflight
@@ -94,10 +104,11 @@ def test_finalized_public_action_identity():
     readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
     example = (REPO_ROOT / "examples" / "workflow" / "diffseal.yml").read_text(encoding="utf-8")
     for text in (readme, example):
-        assert "zuli2021/diffseal@v0.1.0" in text
+        assert "zuli2021/diffseal@v0.1.1" in text
+        assert "zuli2021/diffseal@v0.1.0" not in text
         assert "<owner>" not in text
         assert "<ref>" not in text
-    assert SELF_REFERENCE == "zuli2021/diffseal@v0.1.0"
+    assert SELF_REFERENCE == "zuli2021/diffseal@v0.1.1"
 
 
 def test_public_presentation_metadata():
@@ -118,7 +129,7 @@ def test_public_presentation_metadata():
         assert obsolete not in readme
     # Durable release-readiness essentials must be present.
     assert "pip install diffseal" in readme
-    assert "zuli2021/diffseal@v0.1.0" in readme
+    assert "zuli2021/diffseal@v0.1.1" in readme
     for marker in (
         "evidence.json",
         "evidence.md",

@@ -27,8 +27,8 @@ jobs:
 
       - name: DiffSeal review readiness
         id: diffseal
-        # DiffSeal v0.1.0 release-specific tag.
-        uses: zuli2021/diffseal@v0.1.0
+        # DiffSeal v0.1.1 release-specific tag.
+        uses: zuli2021/diffseal@v0.1.1
         with:
           config: .diffseal.toml
           output-dir: evidence
