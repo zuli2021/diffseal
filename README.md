@@ -13,6 +13,14 @@ DiffSeal has two product lines:
 
 Founding launch: $19 one-time.
 
+## See DiffSeal in action
+
+See the complete DiffSeal workflow in 58 seconds — from Python verification signals to normalized evidence and an explicit review-readiness decision.
+
+[![DiffSeal demo](docs/assets/diffseal-demo-poster.png)](docs/assets/diffseal-demo-58s.mp4)
+
+▶ [Watch the 58-second DiffSeal demo](docs/assets/diffseal-demo-58s.mp4)
+
 ## Quick flow
 
 For a published release, install DiffSeal with:
