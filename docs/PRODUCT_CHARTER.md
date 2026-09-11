@@ -6,6 +6,13 @@ Status: Architecture Closed
 
 DiffSeal is a local-first, Python-first PR evidence/proof gate that turns verification signals for one exact repository change into one normalized evidence bundle and one explicit review-readiness decision.
 
+## License And Availability
+
+- DiffSeal is one free, open-source product.
+- License: Apache-2.0 for the entire product.
+- There is no paid edition, proprietary tier, checkout, or license server
+  (decision `DIFFSEAL-SINGLE-FREE-OSS-001` in `docs/DECISIONS.md`).
+
 ## Target Buyer
 
 - solo Python developer
@@ -24,6 +31,7 @@ One exact change -> real verification signals -> normalized evidence -> one read
 ## Positioning
 
 DiffSeal MUST be positioned as a local developer tool for review readiness.
+
 DiffSeal MUST NOT be positioned as a compliance platform, governance infrastructure, AI code reviewer, SaaS quality platform, security scanner, or replacement for pytest, Ruff, or coverage.
 
 ## Scope Principles
@@ -40,13 +48,6 @@ DiffSeal MUST NOT be positioned as a compliance platform, governance infrastruct
 - Repository identity: `diffseal`
 - Name status: `APPROVED_AND_FROZEN`
 
-## Community And Pro
-
-- Community license: Apache-2.0
-- Pro license: proprietary commercial license
-- Community MUST remain independently useful.
-- Community MUST NOT depend on Pro.
-
 ## Explicit Non-Goals
 
-DiffSeal MUST NOT introduce microservices, a database, a SaaS backend, hosted evidence storage, dashboards, accounts, SSO, RBAC, organizations, a GitHub App, GitLab support, a generic multi-language framework, Python entry-point plugin discovery, OPA/Rego, an LLM requirement, an AI reviewer, a custom scanner, a custom test runner, SARIF, SBOM, Sigstore, in-toto, compliance mapping, GRC integrations, a license server, DRM, or mandatory telemetry.
+DiffSeal MUST NOT introduce microservices, a database, a SaaS backend, hosted evidence storage, dashboards, accounts, SSO, RBAC, organizations, a GitHub App, GitLab support, a generic multi-language framework, Python entry-point plugin discovery, OPA/Rego, an LLM requirement, an AI reviewer, a custom scanner, a custom test runner, SARIF, SBOM, Sigstore, in-toto, compliance mapping, GRC integrations, a license server, DRM, mandatory telemetry, or a paid edition.

@@ -1,7 +1,10 @@
 # Community v0.1.0 Release Protocol
 
 This document defines the governed release gates and execution sequence for
-the first DiffSeal Community release. Live external state must be re-verified
+the first DiffSeal release (v0.1.0). It is retained as historical release
+governance for the v0.1.0 release; subsequent release protocol lives in
+`docs/RELEASE_DISTRIBUTION_POLICY.md` plus the decision record in
+`docs/DECISIONS.md`. Live external state must be re-verified
 immediately before each irreversible release operation. This document is a
 protocol, not a live snapshot of current external configuration.
 

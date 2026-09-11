@@ -64,12 +64,14 @@ Collectors MUST focus on tool invocation and normalization. They MUST NOT define
 
 The GitHub Action MUST remain thin and MUST NOT duplicate business logic in Action YAML.
 
-## Community And Pro Boundary
+## Product Boundary
 
-- Community core is the base product.
-- Pro extends Community.
-- Community MUST NOT depend on Pro.
-- Pro MUST NOT duplicate the core engine.
+- There is one product: DiffSeal, free and open-source (Apache-2.0), per
+  decision `DIFFSEAL-SINGLE-FREE-OSS-001` in `docs/DECISIONS.md`.
+- The former Community/Pro split is superseded; no proprietary edition
+  exists.
+- All capability evolution happens inside the same modular monolith under
+  the same architecture invariants.
 
 ## Guardrails
 

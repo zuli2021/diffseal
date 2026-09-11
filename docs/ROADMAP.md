@@ -1,68 +1,52 @@
 # ROADMAP
 
-Status: Execution Packages Only
+Status: Execution Milestones Only
 
-## Package 1 - Canonical closure
+Milestones follow decision `DIFFSEAL-SINGLE-FREE-OSS-001`
+(`docs/DECISIONS.md`): DiffSeal is one free open-source Apache-2.0 product.
+There is no paid tier and no proprietary edition.
 
-This package records the closed product, architecture, evidence, and commercial decisions in canonical repository documents.
+## Milestone 1 - Canonical closure (DONE)
 
-## Package 2 - Community Core
+Product, architecture, evidence, and governance decisions recorded in
+canonical repository documents (`docs/DECISIONS.md` and companion docs).
 
-- package skeleton
-- models
-- EvidenceBundle schema
-- config
-- check and gate semantics
+## Milestone 2 - Core (DONE, v0.1)
+
+- package skeleton, models, EvidenceBundle schema 0.1
+- config, check and gate semantics
 - subprocess and tool invocation boundary
-- pytest collector
-- Ruff collector
-- basic coverage collector
-- dependency collector only if cheap and reliable
-- JSON reporter
-- Markdown reporter
-- CLI `diffseal init`
-- CLI `diffseal plan`
-- CLI `diffseal run`
-- tests
-- lint, typecheck, and build
+- pytest, Ruff, basic coverage, dependency collectors
+- JSON and Markdown reporters
+- CLI `diffseal init` / `diffseal plan` / `diffseal run`
+- tests, lint, typecheck, build
 
-## Package 3 - Community Distribution
+## Milestone 3 - Distribution (DONE, v0.1.1)
 
 - composite GitHub Action
-- secure permissions
-- fork threat tests
-- example repository
-- README and quickstart
-- sample evidence
-- PyPI packaging
-- Trusted Publishing preparation
-- release automation
-- Marketplace metadata preparation
+- secure permissions, fork threat tests
+- example repository, README and quickstart, sample evidence
+- PyPI packaging, Trusted Publishing preparation
+- release automation, Marketplace metadata
 
-Public publication remains separately owner-gated.
+## Milestone 4 - Professional features (v0.2, in progress)
 
-## Package 4 - Pro A
+- deterministic base-to-head change intelligence
+- dependency delta between base and head
+- structured, stable decision reason codes
+- advanced reviewer-facing report derived from canonical evidence
+- GitHub Action UX (step summary, revision outputs)
+- cross-platform CI and release hardening
 
-- diff and change awareness
-- richer explanations
-- advanced reports
-- dependency delta if tractable
-- Pro package boundary
+Deferred beyond v0.2 (not implemented in this milestone):
 
-## Package 5 - Pro B / deferred complexity
+- changed-line / diff coverage
 
-- coverage delta
-- advanced dependency interpretation
-- other capabilities only with evidence
+## Later stabilization (toward v1.0)
 
-## Package 6 - Paid Launch
+- hardening and polish based on real usage feedback
+- performance and large-repository behavior
+- documentation expansion
 
-- checkout
-- Pro artifact
-- commercial license
-- delivery
-- demo
-- launch material
-- 14-day experiment
-
-No speculative phases are authorized beyond this sequence.
+No dates are invented for future milestones. No speculative phases are
+authorized beyond this sequence.

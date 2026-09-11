@@ -1,4 +1,4 @@
-"""Shared test fixtures for DiffSeal Community Core."""
+"""Shared test fixtures for DiffSeal."""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""Basic coverage collector (v0.1).
+"""Basic coverage collector.
 
 Goal: determine whether basic coverage evidence satisfies a configured
 threshold. Uses ``coverage.py`` to run the test suite and report a total
@@ -11,7 +11,7 @@ Semantics:
 - coverage tool unavailable / no report    -> ERROR
 - threshold not configured                 -> SKIPPED
 
-Deliberately out of scope (Pro): diff coverage, changed-line coverage,
+Deliberately out of scope (deferred): diff coverage, changed-line coverage,
 branch-diff semantics, rename awareness, baseline-service comparison.
 """
 

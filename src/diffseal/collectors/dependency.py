@@ -8,8 +8,7 @@ version specifier.
 
 This check verifies LOCAL DECLARED REQUIREMENT SATISFACTION only. It is
 deliberately NOT a vulnerability/audit scanner; a vulnerability database,
-custom advisory logic, and network-heavy architecture are out of scope for
-Community Core.
+custom advisory logic, and network-heavy architecture are out of scope.
 
 Semantics:
 

@@ -4,7 +4,14 @@ Status: Noncanonical distribution/evidence artifact. This document records
 distribution-channel compliance evidence and prerequisite analysis. It does
 not modify product architecture. It does not authorize publication.
 
-Generated at baseline commit `00874ff6696bc038ae3abcb42fd09f85e1dec800`.
+DiffSeal is one free, open-source Apache-2.0 product
+(decision `DIFFSEAL-SINGLE-FREE-OSS-001` in `docs/DECISIONS.md`). The
+commercial Pro tier referenced by earlier revisions of this document was
+removed by that decision.
+
+Generated at baseline commit `00874ff6696bc038ae3abcb42fd09f85e1dec800`,
+reconciled with the single-product open-source model at the v0.2 governance
+migration.
 
 ---
 
@@ -60,7 +67,7 @@ technically create a package".
 - N. Owner-only interaction: release publication UI; category selection
 - O. Namespace/name collision check: listing name `DiffSeal` live and unique
 - P. Resubmission semantics: new release tag for new version
-- Q. Current DiffSeal blocker: none for Community listing; legal item below
+- Q. Current DiffSeal blocker: none for the Action listing; legal item below
 - R. Next prerequisite: none
 - S. Status: **LIVE_WITH_OPEN_ERR**
 
@@ -401,12 +408,11 @@ infrastructure:
 - user support requests
 - failed installation reports
 - upgrade/uninstall problems
-- Pro interest / commercial conversion evidence where applicable (see
-  `docs/COMMERCIAL_RELEASE_POLICY.md` funnel distinctions)
 
-The COMMERCIAL_RELEASE_POLICY distinctions are preserved and NOT equated:
+The RELEASE_DISTRIBUTION_POLICY distinctions are preserved and NOT equated:
 view ≠ acquisition; download ≠ successful install; install ≠ successful
-activation; star ≠ paying customer.
+activation; star ≠ adoption. (The former Pro interest / commercial conversion
+category was removed with the commercial model; see `docs/DECISIONS.md`.)
 
 Feedback (moderator findings, issue reports, failed-install reports, upgrade
 friction) feeds the distribution + product backlog, and every change is a
@@ -439,8 +445,9 @@ portable) and Chocolatey (downloaded zip with checksum).
 - preserves the current DiffSeal CLI contract and exit codes
 - can invoke repository-local verification tools (pytest, Ruff, coverage, dependency) as intended — requires that `resolve_tool` module/PATH resolution works in a bundled runtime
 - clean install and uninstall on supported Windows environments
-- must not include Pro code (Community artifact only)
-- ships required Community license material
+- must not include code outside the Apache-2.0 product boundary
+  (there is no proprietary edition; see `docs/DECISIONS.md`)
+- ships required license material
 - dependency license review
 - malware/AV false-positive consideration
 - Windows architecture support decision (x64; x86/ARM64 undecided)
@@ -487,7 +494,7 @@ otherwise):
 2. Resolve/contain distribution legal metadata gaps where required
    (Marketplace EULA item; Chocolatey owner/copyright identity).
 3. Close the Windows portable artifact architecture (Section 11 decision).
-4. Build and test a Windows portable Community artifact.
+4. Build and test a Windows portable open-source artifact.
 5. Use that artifact for governed WinGet + Chocolatey packaging.
 6. STOP at each platform human approval gate.
 7. Homebrew/core only after a genuine stable upstream status (real product
@@ -531,9 +538,8 @@ invented here.
 **PRODUCT / ARCHITECTURE**
 - `PRODUCT_CHARTER` = Architecture Closed
 - local-first / Python-first
-- Community independently useful
-- Community Apache-2.0
-- Pro proprietary
+- one free open-source product (`DIFFSEAL-SINGLE-FREE-OSS-001`)
+- Apache-2.0 for the entire product
 
 **DEPENDENCIES**
 - current runtime dependencies come from `pyproject.toml`
@@ -542,11 +548,11 @@ invented here.
 - no hidden dependency assumption
 
 **BUILD / PACKAGE**
-- current Community distribution = sdist + wheel
+- current distribution = sdist + wheel
 - Windows portable artifact = not built; ERR remains open
 
 **VERSIONING / MATURITY**
-- version 0.1.1
+- version 0.1.1 at this matrix's baseline (v0.2 in preparation)
 - Alpha
 - maturity is NOT changed to gain package-manager eligibility
 
@@ -574,12 +580,10 @@ invented here.
 - public publication remains owner-gated
 
 **PRICING**
-- founding Pro experiment price = $19 one-time
-- price remains fixed during the initial 14-day experiment
-  (`docs/COMMERCIAL_RELEASE_POLICY.md`)
+- FREE / open-source; no pricing applies (`docs/RELEASE_DISTRIBUTION_POLICY.md`)
 
-**LAUNCH / ACQUISITION**
-Reference `COMMERCIAL_RELEASE_POLICY`:
+**LAUNCH / ADOPTION**
+Reference `RELEASE_DISTRIBUTION_POLICY`:
 - targeted developer outreach
 - technical demonstration/article
 - appropriate technical community
@@ -594,18 +598,16 @@ Reference `PRODUCT_CHARTER`:
 - developers reviewing AI-assisted changes
 
 **SUPPORT**
-- Community public issue/feedback channel = GitHub Issues
+- public issue/feedback channel = GitHub Issues
 - no support SLA is claimed
-- Pro support model = NOT_PUBLISHED unless another closed repository decision
-  defines it
 - no invented support promise
 
 **MEASUREMENT**
-Reference the closed 14-day manual worksheet:
-- date, source, qualified, installed, first_run, repeated_use, pro_interest,
-  checkout, purchase, feedback
-- funnel distinctions preserved: view != acquisition; download != successful
-  install; install != activation; star != paying customer
+Reference `RELEASE_DISTRIBUTION_POLICY`:
+- truthful adoption signals: qualified exposure, visit, install, first run,
+  repeated use, feedback
+- distinctions preserved: view != acquisition; download != successful
+  install; install != activation; star != adoption
 
 **FEEDBACK**
 Reference Section 10: feedback -> backlog -> governed improvement -> next

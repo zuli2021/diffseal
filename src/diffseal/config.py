@@ -1,7 +1,7 @@
-"""Project-local configuration for DiffSeal Community Core.
+"""Project-local configuration for DiffSeal.
 
 Configuration lives in ``.diffseal.toml`` and is intentionally small. Only
-settings genuinely required by Community v0.1 are supported. Unknown keys
+settings genuinely required by the current product are supported. Unknown keys
 produce a useful error instead of being silently ignored.
 
 Normalized effective configuration is used for deterministic hashing; secrets
@@ -312,7 +312,7 @@ def load_config(start: Path, explicit: Path | None = None) -> Config:
 
 
 DEFAULT_TOML = """\
-# DiffSeal Community Core configuration.
+# DiffSeal configuration.
 # This file is optional; absent it, built-in defaults apply.
 
 [checks.pytest]

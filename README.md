@@ -4,14 +4,7 @@ Turn Python verification signals into one reproducible review-readiness evidence
 
 DiffSeal is a local-first, Python-first review-readiness gate. It runs the verification tools you already use against one exact repository state, normalizes their output into a single evidence bundle, and produces one explicit decision: is this change ready for review?
 
-## Two product lines
-
-DiffSeal has two product lines:
-
-- **DiffSeal Community — available now.** Free and open-source. Provides the core local-first evidence pipeline, normalized evidence artifacts, deterministic review-readiness decisions, CLI use, and GitHub Actions integration.
-- **DiffSeal Pro — commercial edition.** The commercial DiffSeal product line for developers and teams that need deeper change intelligence, richer evidence explanation, and stronger reviewer-facing reporting. Pro is being prepared for launch and is not yet publicly released.
-
-Founding launch: $19 one-time.
+DiffSeal is free and open-source, licensed under Apache-2.0. There is one product line — no paid edition, no proprietary tier, and no accounts or SaaS requirement.
 
 ## See DiffSeal in action
 
@@ -69,11 +62,9 @@ Verification output is scattered. A change produces pytest output, Ruff output, 
 
 DiffSeal collects those signals into one normalized evidence packet and gives the reviewer an explicit, reproducible decision instead of a pile of logs.
 
-## Community and Pro
+## Capabilities
 
-### Community — available now
-
-Community is the free, open-source (Apache-2.0) foundation and the primary path to evaluate and adopt DiffSeal. It is independently useful on its own:
+DiffSeal is independently useful on its own:
 
 - pytest verification
 - Ruff verification
@@ -84,23 +75,6 @@ Community is the free, open-source (Apache-2.0) foundation and the primary path 
 - CLI: `diffseal init`, `diffseal plan`, `diffseal run`
 - GitHub Actions integration
 - local-first operation with no SaaS, account, or API-key requirement
-
-### Pro — commercial, coming next
-
-DiffSeal Pro is the proprietary commercial product line. It is being prepared for launch and is not yet publicly released. Its planned direction focuses on deeper change intelligence and reviewer assistance:
-
-- diff/change awareness
-- richer evidence explanations
-- advanced reviewer-facing reports
-- dependency delta if tractable
-
-DiffSeal Pro is the commercial product line. Pro is not part of this Apache-2.0 Community repository.
-
-DiffSeal Pro is being prepared for its founding launch.
-
-**Founding price: $19 one-time.**
-
-Commercial access details will be published separately.
 
 ## What it produces
 
@@ -279,7 +253,7 @@ The same normalized evidence plus the same policy always produces the same decis
 
 ## Community scope
 
-Community v0.1 collectors:
+Current collectors:
 
 | Collector | Role |
 |-----------|------|
@@ -311,8 +285,8 @@ DiffSeal runs the tools present in its own environment. Third-party CI providers
 
 ## License
 
-Community is licensed under the Apache License 2.0. See `LICENSE`.
+DiffSeal is licensed under the Apache License 2.0. See `LICENSE`.
 
 ## Status
 
-DiffSeal Community is an early/Alpha release line focused on local-first Python review-readiness evidence. The repository is public. Current release availability is represented by the repository's GitHub Releases and PyPI project page.
+DiffSeal is an early/Alpha release line focused on local-first Python review-readiness evidence. The repository is public. Current release availability is represented by the repository's GitHub Releases and PyPI project page.
